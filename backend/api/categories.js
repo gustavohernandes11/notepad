@@ -54,9 +54,23 @@ module.exports = app => {
             .catch(e => res.status(500).send(e))
     }
 
-    const remove = (req, res) => {
-        app.db('categories')
-            .select('id', 'name', 'color', 'user_id')
+
+
+    const remove = async (req, res) => {
+        try {
+            const relatedNotes = await app.db('notes')
+            .where({ category_id: req.params.id })
+            notExistsOrError(relatedNotes, 'Categoria possui notas relacionadas')
+
+            await app.db('categories')
+            .where({ id: req.params.id })
+            .del()
+            .then(_ => res.status(204).send())
+
+        } catch(msg){
+            res.status(400).send(msg)
+        }
+            
 
     }
 

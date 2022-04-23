@@ -1,15 +1,19 @@
+const bcrypt = require('bcrypt-nodejs')
 module.exports = app => {
-    const { existsOrError, notExistsOrError, equalsOrError } = app.api.validation
+const { existsOrError, notExistsOrError, equalsOrError } = app.api.validation
 
-    //adc: criar função de criptografar senha
-
+    const encryptPassword = password => {
+        const salt = bcrypt.genSaltSync(10)
+        return bcrypt.hashSync(password, salt)
+    }
 
     const save = async (req, res) => {
         const user = { ...req.body }
         if (req.params.id) user.id = req.params.id
 
-        //adc: função de confirmação de admin = false
-
+        if(!req.originalUrl.startsWith('/users')) user.admin = false
+        if(!req.user || !req.user.admin) user.admin = false
+        
         try {
             existsOrError(user.name, 'Nome não informado!')
             existsOrError(user.email, 'Email não informado!')
@@ -28,7 +32,7 @@ module.exports = app => {
             return res.status(400).send(msg)
         }
 
-        //adc: criptografar senha
+        user.password = encryptPassword(user.password)
         delete user.confirmPassword
         if (user.id) {
             app.db('users')
@@ -47,19 +51,40 @@ module.exports = app => {
     }
     const get = (req, res) => {
         app.db('users')
-            .select('id', 'name', 'email', 'admin')
+            .select('id', 'name', 'email', 'admin', 'password')
+            .whereNull('deletedAt')
             .then(users => res.json(users))
             .catch(e => res.status(400).send(e))
     }
 
     const getById = (req, res) => {
         app.db('users')
-            .select('id', 'name', 'email', 'admin')
+            .select('id', 'name', 'email', 'admin', 'password')
             .where({ id: req.params.id })
+            .whereNull('deletedAt')
             .first()
             .then(user => res.json(user))
             .catch(e => res.status(500).send(e))
     }
 
-    return { save, get, getById }
+    const remove = async (req, res) => {
+        try {
+            const categories = await app.db('categories')
+            .where({ user_id: req.params.id})
+            notExistsOrError(categories, 'Usuário possui categorias associadas!')
+            
+
+            const rowsUpdated = await app.db('users')
+            .update({ deletedAt: new Date() })
+            .where({ id: req.params.id})
+            existsOrError(rowsUpdated, 'Usuário não encontrado!')
+            
+            res.status(204).send()
+        } catch (msg){
+            res.status(400).send()
+        }
+
+    }
+
+    return { save, get, getById, remove }
 }

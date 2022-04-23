@@ -7,20 +7,16 @@ module.exports = app => {
         if (req.params.id) note.id = req.params.id
 
 
-        // try {
-        //     existsOrError(note.category_id, 'Nota sem categoria!')
-        //     existsOrError(note.content, 'Nota sem conteúdo!')
+        try {
+            existsOrError(note.category_id, 'Nota sem categoria!')
+            existsOrError(note.content, 'Nota sem conteúdo!')
 
-        //     const categoryFromDb = await app.db('category')
-        //         .where({ id: note.category_id })
-        //         .first()
-        //         if(!note.id) {
-        //             existsOrError(categoryFromDb, 'ID de uma categoria inexistente.')
-        //         }
 
-        // } catch (msg) {
-        //     return res.status(400).send(msg)
-        // }
+            
+
+        } catch (msg) {
+            return res.status(400).send(msg)
+        }
 
         if (note.id) {
             app.db('notes')
@@ -39,7 +35,7 @@ module.exports = app => {
     }
     const get = (req, res) => {
         app.db('notes')
-            .select('id', 'category_id', 'favorite', 'content')
+            .select('id', 'title', 'favorite', 'category_id', 'content')
             .then(notes => res.json(notes))
             .catch(e => res.status(400).send(e))
     }
@@ -54,8 +50,12 @@ module.exports = app => {
     }
 
     const remove = (req, res) => {
-        app.db('note')
-            .select('id', 'category_id', 'favorite', 'content')
+        app.db('notes')
+            .where({ id: req.params.id })
+            .del()
+            .then(_ => res.status(204).send())
+            .catch(e => res.status(400).send(e))
+
 
     }
 

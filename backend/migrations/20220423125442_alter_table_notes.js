@@ -1,7 +1,7 @@
 
 exports.up = function(knex, Promise) {
     return knex.schema.alterTable('notes', table => {
-        table.timestamp('content').notNull()
+        table.string('content').notNull()
       })
 };
 
