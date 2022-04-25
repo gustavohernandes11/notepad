@@ -1,22 +1,34 @@
 <template>
   <header class="header">
-      Header
+    <strong>!notePad</strong>
+    <div class="flexrow">
+    <CommonButton value='Administração' />
+    <CommonButton value='Entrar' />
+    <CommonButton value='Registre-se' />
+    </div>
   </header>
 </template>
 
 <script>
 /* eslint-disable vue/multi-word-component-names */
+import CommonButton from "../CommonButton.vue";
 export default {
-    name: 'header'
-}
+  name: "header",
+  components: {
+    CommonButton,
+  },
+};
 </script>
 
-<style>  
+<style>
 .header {
-    grid-area: header;
-      border-bottom: 1px solid rgba(192, 192, 192, 0.568);
-  padding: 15px
-
-  }
-
+  grid-area: header;
+  border-bottom: 1px solid var(--color-border-grey);
+  padding: 15px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--main-bg-color)
+}
 </style>

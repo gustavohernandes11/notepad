@@ -8,8 +8,19 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "axios": "0.18.0",
+    "bootstrap": "^4.5.2",
+    "bootstrap-vue": "^2.17.3",
     "core-js": "^3.8.3",
-    "vue": "^3.2.13"
+    "highlightjs": "9.10.0",
+    "popper.js": "^1.16.1",
+    "portal-vue": "^2.1.7",
+    "vue": "^3.2.13",
+    "vue-mq": "0.2.1",
+    "vue-router": "3.0.1",
+    "vue-toasted": "1.1.24",
+    "vue2-editor": "2.6.6",
+    "vuex": "3.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
@@ -18,7 +29,11 @@
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
     "eslint": "^7.32.0",
-    "eslint-plugin-vue": "^8.0.3"
+    "eslint-plugin-vue": "^8.0.3",
+    "sass": "^1.26.11",
+    "sass-loader": "^10.0.2",
+    "vue-cli-plugin-bootstrap-vue": "~0.8.2",
+    "vue-template-compiler": "2.5.17"
   },
   "eslintConfig": {
     "root": true,
