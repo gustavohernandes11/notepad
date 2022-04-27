@@ -28,7 +28,7 @@ export default {
   height: 100vh;
   width: 100vw;
   overflow-x: hidden;
-  overflow-y:hidden;
+  /* overflow-y:hidden; */
   
 }
 * {

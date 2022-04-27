@@ -3,21 +3,10 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-
-// import store from './store.js'
-// import { Store } from 'vuex'
+import store from './store'
 
 
-// const store = Store.createStore({
-//   state: {
-//     category:{},
-//     test: "testestes",
-//     note: {}
-//   },
-//   mutations: {}
-
-// });
 
 
-createApp(App).use(router).mount('#app')
+createApp(App).use(store).use(router).mount('#app')
 

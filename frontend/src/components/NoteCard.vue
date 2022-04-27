@@ -1,28 +1,46 @@
 <template>
   <div class="notecard flexcolumn">
     <div class="noteheader flexrow">
-      <b>{{ title }}</b>
+      <b>{{ titleNote }}</b>
       
     </div>
     <div class="notebody">
       <p>{{ content }}</p>
     </div>
     <div class="notefooter flexrow">
+      <span class="flexrow" >
+      <CommonButton value="Edit" @click="editNote()" />
+      <CommonButton value="Delete" @click="deleteNote()" />
+      </span>
+      
       <div v-if="favorite" class="icon" >★</div> <div v-else class="icon" style="color: #444">★</div>
-<p>{{ category }}</p>
+    <p>{{ category.color }}</p>
     </div>
   </div>
 </template>
 
 <script>
 // "☆★"
+import CommonButton from './CommonButton.vue'
 export default {
+  components: {
+    CommonButton
+  },
   props: {
-    title: String,
+    titleNote: String,
     content: String,
     category: String,
     favorite: Boolean,
   },
+  methods: {
+    editNote() {
+      this.$store.commit("setEditMode", "edit");
+    },  
+    deleteNote(){
+      this.$store.commit("setEditMode", "delete");
+
+    }
+  }
 };
 </script>
 
@@ -68,7 +86,8 @@ export default {
 .notefooter {
   width: 100%;
   height: 20px;
+  margin-top: 20px;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 </style>

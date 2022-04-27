@@ -9,7 +9,7 @@
       v-for="category in categories"
       :key="category.id"
       :name="category.name"
-      @click="getCategory(category.id)"
+      @click="getCategory(category)"
     />
   </aside>
 </template>
@@ -40,11 +40,11 @@ export default {
         this.categories = res.data;
       });
     },
-    getCategory(id) {
-      const url = `${baseApiUrl}/categories/${id}`;
+    getCategory(category) {
+      const url = `${baseApiUrl}/categories/${category.id}`;
       axios.get(url).then((res) => {
-        this.category = res.data;
-        console.log(this.category)
+        this.$store.state.category = res.data;
+        console.log(this.$store.state.category);
       });
     },
   },
