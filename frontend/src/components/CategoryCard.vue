@@ -1,7 +1,7 @@
 <template>
   <div class="categorycard flexrow">
     <p>{{ name }}</p>
-    <div class="actionbox flexrow">
+    <div  class="actionbox flexrow">
     <!-- <p>E</p>
     <p>D</p> -->
     </div>
@@ -18,7 +18,6 @@ export default {
 
 <style>
 .categorycard {
-  /* margin: 10px 0px; */
   padding: 0px 15px;
   background-color: var(--main-bg-color);
   font-size: 0.8rem;

@@ -60,9 +60,15 @@ export default {
   border-right: 1px solid var(--color-border-grey);
   border-bottom: 1px solid var(--color-border-grey);
   background-color: var(--main-bg-color);
+  flex-grow: 1;
+  min-width: 250px;
 
   padding: 30px 15px;
   position: sticky;
+}
+.menuheader {
+  justify-content: space-between;
+  align-items: center;
 }
 .menuheader > p {
   margin-bottom: 20px;

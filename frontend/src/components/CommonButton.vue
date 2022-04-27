@@ -25,6 +25,7 @@ export default {
 
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 .commonbutton:hover {
   background-color: rgb(241, 241, 241);

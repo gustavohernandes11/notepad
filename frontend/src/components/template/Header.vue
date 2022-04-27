@@ -1,11 +1,12 @@
 <template>
   <header class="header">
     <strong>!notePad</strong>
-    <div class="flexrow">
-    <CommonButton value='Administração' />
-    <CommonButton value='Entrar' />
-    <CommonButton value='Registre-se' />
-    </div>
+    <nav class="flexrow">
+      <router-link to="/" ><CommonButton value="Home" /></router-link>
+      <router-link to="/admin"><CommonButton class="mr-2" value="Administração"/></router-link>
+      <router-link to="/login"> <CommonButton value="Entrar" /></router-link>
+      <!-- <router-link><CommonButton value="Registre-se" /></router-link> -->
+    </nav>
   </header>
 </template>
 
@@ -13,7 +14,7 @@
 /* eslint-disable vue/multi-word-component-names */
 import CommonButton from "../CommonButton.vue";
 export default {
-  name: "header",
+  name: "Header",
   components: {
     CommonButton,
   },
@@ -29,6 +30,6 @@ export default {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  background-color: var(--main-bg-color)
+  background-color: var(--main-bg-color);
 }
 </style>
