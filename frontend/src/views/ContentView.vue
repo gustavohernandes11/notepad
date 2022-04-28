@@ -3,15 +3,25 @@
     <Menu v-show="this.$store.state.isMenuOpen" />
     <div class="notesarea">
       <div class="notesareaheader flexcolumn">
-        <h1>Anotações</h1>
+        <span class="flexrow">
+          <h1>Anotações</h1>
+          <CommonButton v-if="this.$store.state.isEditMode !== 'add'"
+            class="flexcenter"
+            value="Adicionar"
+            @click="handleAdd();"
+          />
+        </span>
         <h2>
           {{
-            this.$store.state.category
+            this.$store.state.category.name
               ? this.$store.state.category.name
               : "Todos"
           }}
         </h2>
       </div>
+      <p v-if="this.$store.state.notes.length == 0">
+        Não há anotações nessa categoria!
+      </p>
       <NoteCard
         v-for="note in this.$store.state.notes"
         :key="note.id"
@@ -19,7 +29,7 @@
         :titleNote="note.title"
         :category="note.category_id"
         :content="note.content"
-        @click="getNote(note)"
+        @click="this.$store.commit('getNote', note)"
       />
     </div>
     <EditMenu v-if="this.$store.state.isEditMode" />
@@ -30,9 +40,10 @@
 /* eslint-disable vue/multi-word-component-names */
 import EditMenu from "../components/EditMenu.vue";
 import NoteCard from "../components/NoteCard.vue";
+import CommonButton from "../components/CommonButton.vue";
 import Menu from "../components/template/Menu.vue";
-import axios from "axios";
-import { baseApiUrl } from "@/global.js";
+// import axios from "axios";
+// import { baseApiUrl } from "@/global.js";
 
 export default {
   name: "content",
@@ -40,53 +51,26 @@ export default {
     NoteCard,
     Menu,
     EditMenu,
+    CommonButton,
   },
   data() {
-    return {
-      isEditMode: true,
-    };
+    return {};
   },
   methods: {
-    loadNotes() {
-      const url = `${baseApiUrl}/notes`;
-      axios.get(url).then((res) => {
-        this.$store.state.notes = res.data;
-        console.log(this.$store.state.notes);
-      });
-    },
-    loadCategories() {
-      const url = `${baseApiUrl}/categories`;
-      axios.get(url).then((res) => {
-        this.$store.state.categories = res.data;
-      });
-    },
-    getNote(note) {
-      const url = `${baseApiUrl}/notes/${note.id}`;
-      axios.get(url).then((res) => {
-        this.$store.state.note = res.data;
-      });
-    },
-
-    toggleFavorite() {
-      const url = `${baseApiUrl}/notes/${this.note.id}`;
-      this.note.favorite
-        ? (this.note.favorite = false)
-        : (this.note.favorite = true);
-
-      axios.put(url, this.note).then((res) => {
-        this.note = res.data;
-        this.getNotes();
-      });
-    },
-    
     reset() {
       this.$store.commit("setEditMode", null);
+      this.$store.commit("loadNotes");
+      this.$store.commit("loadCategories");
+    },
+    handleAdd() {
+      this.$store.commit("resetNote");
+      this.$store.commit("setEditMode", 'add');
     },
   },
 
   mounted() {
-    this.loadNotes();
-    this.loadCategories();
+    this.$store.commit("loadNotes");
+    this.$store.commit("loadCategories");
   },
 };
 </script>
@@ -98,6 +82,7 @@ export default {
   display: flex;
   flex-direction: row;
   background-color: rgb(22, 22, 22);
+  overflow: hidden;
 }
 .notesarea {
   border-right: 1px solid var(--color-border-grey);

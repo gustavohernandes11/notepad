@@ -46,7 +46,7 @@ export default {
   height: 100%;
 }
 .authbox {
-  min-height: 300px;
+  min-height: 350px;
   min-width: 300px;
   display: flex;
   justify-content: center;

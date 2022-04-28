@@ -4,7 +4,7 @@
       <p>Categorias</p>
       <CommonButton value="+" />
     </div>
-    <CategoryCard name="All" />
+    <CategoryCard name="All" @click="getCategory(null)" />
     <CategoryCard
       v-for="category in categories"
       :key="category.id"
@@ -38,12 +38,20 @@ export default {
       const url = `${baseApiUrl}/categories`;
       axios.get(url).then((res) => {
         this.categories = res.data;
+        this.$store.commit('loadNotes');
       });
     },
     getCategory(category) {
+      
+      if (category === null) {
+        this.$store.commit('resetCategory');
+        this.$store.commit('loadNotes')
+
+      }
       const url = `${baseApiUrl}/categories/${category.id}`;
       axios.get(url).then((res) => {
         this.$store.state.category = res.data;
+        this.$store.commit('loadNotes')
         console.log(this.$store.state.category);
       });
     },
@@ -60,8 +68,8 @@ export default {
   border-right: 1px solid var(--color-border-grey);
   border-bottom: 1px solid var(--color-border-grey);
   background-color: var(--main-bg-color);
-  flex-grow: 1;
-  min-width: 250px;
+  flex-shrink: none;
+  min-width: 260px;
 
   padding: 30px 15px;
   position: sticky;

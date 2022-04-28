@@ -1,17 +1,25 @@
 <template>
   <div class="editorarea flexcolumn">
-    <p>Edição</p>
-    <select type="number" name="category" id="category">
+    <p v-if="this.$store.state.isEditMode === 'edit'">Edição</p>
+    <p v-if="this.$store.state.isEditMode === 'add'">Nova anotação</p>
+
+    <select
+      v-model="selectedCategoryName"
+      type="number"
+      name="category"
+      id="category"
+    >
       <option
         v-for="category in this.$store.state.categories"
         :key="category.id"
+        :selected="this.$store.state.category.name === category.name ? 'selected' : ''"
+
       >
         {{ category.name }}
       </option>
     </select>
     <input
       type="text"
-      name="title"
       id="inputtitle"
       placeholder="Título"
       v-model="this.$store.state.note.title"
@@ -25,22 +33,63 @@
       v-model="this.$store.state.note.content"
     />
     <CommonButton value="Cancelar" @click="reset()" />
-    <CommonButton value="Enviar" />  
+    <CommonButton
+      value="Enviar"
+      @click="sendCurrentNote()"
+   />
   </div>
 </template>
 
 <script>
 import CommonButton from "./CommonButton.vue";
+import axios from "axios";
+import { baseApiUrl } from "../global";
 export default {
   name: "MenuEdit",
   components: {
     CommonButton,
   },
+  data() {
+    return {
+      selectedCategory: 0,
+      selectedCategoryName: "",
+    };
+  },
   methods: {
-      reset(){
-          this.$store.commit('setEditMode', null)
+    getCategoryByName() {
+      this.selectedCategory = this.$store.state.categories.find(
+        (el) => el.name === this.selectedCategoryName
+      );
+    },
+    sendCurrentNote() {
+      this.getCategoryByName();
+      console.log(this.selectedCategory);
+
+      // this.$store.commit("setNote");
+      if (this.$store.state.note.id) {
+        const url = `${baseApiUrl}/notes/${this.$store.state.note.id}`;
+
+        this.$store.state.note.category_id = this.selectedCategory.id;
+
+        axios.put(url, this.$store.state.note).then(() => {
+          this.$store.commit('resetNote', null);
+          this.$store.commit('loadNotes');
+        });
+      } else {
+        const url = `${baseApiUrl}/notes`;
+
+        this.$store.state.note.category_id = this.selectedCategory.id;
+
+        axios.post(url, this.$store.state.note).then(() => {
+          this.$store.commit("resetNote");
+          this.$store.commit("loadNotes");
+        });
       }
-  }
+    },
+    reset() {
+      this.$store.commit("setEditMode", null);
+    },
+  },
 };
 </script>
 
@@ -53,16 +102,17 @@ export default {
 .editorarea input,
 .editorarea textarea,
 .editorarea select {
-  flex-grow: 1;
-  flex-wrap: wrap;
-  flex-basis: 50%;
-  height: 20px;
+  height: 50px;
   border-radius: 5px;
   background-color: var(--main-bg-color);
   border: 1px solid var(--color-border-grey);
   padding: 15px;
   margin: 5px;
   font-size: 0.8rem;
+}
+.editorarea textarea {
+  height: 140px;
+  flex-grow: 1;
 }
 
 .editorarea #inputcontent {

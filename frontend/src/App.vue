@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div class="app">
     <Header />
     <router-view />
   </div>
@@ -28,7 +28,7 @@ export default {
   height: 100vh;
   width: 100vw;
   overflow-x: hidden;
-  /* overflow-y:hidden; */
+  overflow-y:hidden;
   
 }
 * {
@@ -67,5 +67,9 @@ export default {
 }
 .mb-2 {
   margin-bottom: 20px
+}
+.s-between {
+  justify-content: space-between
+  
 }
 </style>

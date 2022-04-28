@@ -2,29 +2,39 @@
   <div class="notecard flexcolumn">
     <div class="noteheader flexrow">
       <b>{{ titleNote }}</b>
-      
     </div>
     <div class="notebody">
       <p>{{ content }}</p>
     </div>
-    <div class="notefooter flexrow">
-      <span class="flexrow" >
-      <CommonButton value="Edit" @click="editNote()" />
-      <CommonButton value="Delete" @click="deleteNote()" />
+    <div class="notefooter s-between flexrow">
+      <span class="flexrow">
+        <CommonButton
+          value="Edit"
+          @click="this.$store.commit('setEditMode', 'edit')"
+        />
+        <CommonButton  v-if="this.$store.state.isEditMode !== 'delete'" 
+          value="Delete"
+          @click="this.$store.commit('setEditMode', 'delete')"
+        />
+        <CommonButton v-else 
+        value="Confirmar"
+          @click="this.$store.commit('deleteCurrentNote'); this.$store.commit('setEditMode', null)"
+        />
       </span>
-      
-      <div v-if="favorite" class="icon" >★</div> <div v-else class="icon" style="color: #444">★</div>
-    <p>{{ category.color }}</p>
+      <div class="flexrow">
+        <div v-if="favorite" class="icon">★</div>
+      </div>
+      <p>{{ category.color }}</p>
     </div>
   </div>
 </template>
 
 <script>
 // "☆★"
-import CommonButton from './CommonButton.vue'
+import CommonButton from "./CommonButton.vue";
 export default {
   components: {
-    CommonButton
+    CommonButton,
   },
   props: {
     titleNote: String,
@@ -32,15 +42,6 @@ export default {
     category: String,
     favorite: Boolean,
   },
-  methods: {
-    editNote() {
-      this.$store.commit("setEditMode", "edit");
-    },  
-    deleteNote(){
-      this.$store.commit("setEditMode", "delete");
-
-    }
-  }
 };
 </script>
 
@@ -56,31 +57,27 @@ export default {
   font-size: 0.8rem;
   flex-grow: 1;
   flex-basis: 30%;
-
 }
 .icon {
   font-size: 20px;
   font-weight: 100;
-  cursor: pointer;
-  padding: 3px
+  padding: 3px;
 }
 .notecard b {
   font-size: 1rem;
 }
 .notecard:hover {
   border-color: rgb(175, 175, 175);
-
 }
 .noteheader {
   width: 100%;
   justify-content: space-between;
   align-items: center;
-  padding-top: 8px ;
-
+  padding-top: 8px;
 }
 .notebody {
   flex-grow: 1;
-  padding-top: 10px ;
+  padding-top: 10px;
 }
 
 .notefooter {
