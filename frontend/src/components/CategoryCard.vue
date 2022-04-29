@@ -2,8 +2,7 @@
   <div class="categorycard flexrow">
     <p>{{ name }}</p>
     <div  class="actionbox flexrow">
-    <!-- <p>E</p>
-    <p>D</p> -->
+
     </div>
   </div>
 </template>

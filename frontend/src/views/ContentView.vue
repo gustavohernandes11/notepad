@@ -22,15 +22,17 @@
       <p v-if="this.$store.state.notes.length == 0">
         Não há anotações nessa categoria!
       </p>
+      <transition-group name="flip-list">
       <NoteCard
         v-for="note in this.$store.state.notes"
         :key="note.id"
         :favorite="note.favorite"
-        :titleNote="note.title"
+        :noteTitle="note.title"
         :category="note.category_id"
         :content="note.content"
         @click="this.$store.commit('getNote', note)"
       />
+      </transition-group>
     </div>
     <EditMenu v-if="this.$store.state.isEditMode" />
   </div>
@@ -42,8 +44,7 @@ import EditMenu from "../components/EditMenu.vue";
 import NoteCard from "../components/NoteCard.vue";
 import CommonButton from "../components/CommonButton.vue";
 import Menu from "../components/template/Menu.vue";
-// import axios from "axios";
-// import { baseApiUrl } from "@/global.js";
+
 
 export default {
   name: "content",
@@ -84,6 +85,9 @@ export default {
   background-color: rgb(22, 22, 22);
   overflow: hidden;
 }
+.flip-list-move {
+  transition: transform 1s;
+}
 .notesarea {
   border-right: 1px solid var(--color-border-grey);
   height: 100%;
@@ -91,7 +95,7 @@ export default {
   flex-grow: 3;
   flex-wrap: wrap;
   padding: 40px 15px;
-  overflow-y: scroll;
+  overflow-y:auto;
 }
 .notesareaheader {
   width: 100%;

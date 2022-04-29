@@ -14,9 +14,9 @@ export default createStore({
   getters: {
   },
   mutations: {
-    deleteCurrentNote() {
-      const url = `${baseApiUrl}/notes/${this.$store.state.note.id}`;
-      axios.delete(url, this.$store.state.note).then(() => {
+    deleteCurrentNote(state) {
+      const url = `${baseApiUrl}/notes/${state.note.id}`;
+      axios.delete(url, state.note).then(() => {
         console.log('deletou')
         this.$store.commit("resetNote");
         this.$store.commit("loadNotes");

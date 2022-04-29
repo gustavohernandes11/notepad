@@ -1,7 +1,7 @@
 <template>
   <div class="notecard flexcolumn">
     <div class="noteheader flexrow">
-      <b>{{ titleNote }}</b>
+      <b>{{ noteTitle }}</b>
     </div>
     <div class="notebody">
       <p>{{ content }}</p>
@@ -12,13 +12,21 @@
           value="Edit"
           @click="this.$store.commit('setEditMode', 'edit')"
         />
-        <CommonButton  v-if="this.$store.state.isEditMode !== 'delete'" 
+
+        {{}}
+        <CommonButton
+          v-if="!this.showConfirmButton"
           value="Delete"
-          @click="this.$store.commit('setEditMode', 'delete')"
+          @click="this.toggleConfirm()"
         />
-        <CommonButton v-else 
-        value="Confirmar"
-          @click="this.$store.commit('deleteCurrentNote'); this.$store.commit('setEditMode', null)"
+        <CommonButton
+          v-if="!!this.showConfirmButton"
+          value="Confirmar"
+          @click="
+            this.$store.commit('deleteCurrentNote');
+            this.$store.commit('loadNotes');
+            
+          "
         />
       </span>
       <div class="flexrow">
@@ -37,10 +45,24 @@ export default {
     CommonButton,
   },
   props: {
-    titleNote: String,
+    noteTitle: String,
     content: String,
     category: String,
     favorite: Boolean,
+  },
+  date() {
+    return {
+      showConfirmButton: false,
+    };
+  },
+  methods: {
+    toggleConfirm() {
+      this.showConfirmButton
+        ? (this.showConfirmButton = false)
+        : (this.showConfirmButton = true);
+      console.log(this.showConfirmButton);
+      this.$store.commit("loadNotes");
+    },
   },
 };
 </script>

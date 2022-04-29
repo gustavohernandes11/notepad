@@ -4,7 +4,7 @@
     <p v-if="this.$store.state.isEditMode === 'add'">Nova anotação</p>
 
     <select
-      v-model="selectedCategoryName"
+      v-model="selectedCategoryId"
       type="number"
       name="category"
       id="category"
@@ -12,7 +12,8 @@
       <option
         v-for="category in this.$store.state.categories"
         :key="category.id"
-        :selected="this.$store.state.category.name === category.name ? 'selected' : ''"
+        :value="category.id"
+        :selected="this.$store.state.category.id === category.id"
 
       >
         {{ category.name }}
@@ -51,25 +52,16 @@ export default {
   },
   data() {
     return {
-      selectedCategory: 0,
-      selectedCategoryName: "",
+      selectedCategoryId: Number
     };
   },
   methods: {
-    getCategoryByName() {
-      this.selectedCategory = this.$store.state.categories.find(
-        (el) => el.name === this.selectedCategoryName
-      );
-    },
     sendCurrentNote() {
-      this.getCategoryByName();
-      console.log(this.selectedCategory);
-
-      // this.$store.commit("setNote");
       if (this.$store.state.note.id) {
         const url = `${baseApiUrl}/notes/${this.$store.state.note.id}`;
 
-        this.$store.state.note.category_id = this.selectedCategory.id;
+        this.$store.state.note.category_id = this.selectedCategoryId;
+        console.log(this.$store.state.note)
 
         axios.put(url, this.$store.state.note).then(() => {
           this.$store.commit('resetNote', null);
@@ -78,7 +70,7 @@ export default {
       } else {
         const url = `${baseApiUrl}/notes`;
 
-        this.$store.state.note.category_id = this.selectedCategory.id;
+        this.$store.state.note.category_id = this.selectedCategoryId;
 
         axios.post(url, this.$store.state.note).then(() => {
           this.$store.commit("resetNote");
