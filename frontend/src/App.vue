@@ -7,47 +7,47 @@
 </template>
 <script>
 import Header from "./components/template/Header.vue";
-import { userKey, baseApiUrl } from './global'
-import axios from 'axios'
+import { userKey, baseApiUrl } from "./global";
+import axios from "axios";
 export default {
   components: {
     Header,
   },
-  data(){
-      return {
-        validatingToken: true
-    }
+  data() {
+    return {
+      validatingToken: true,
+    };
   },
   methods: {
     async validateToken() {
-			this.validatingToken = true
+      this.validatingToken = true;
 
-			const json = localStorage.getItem(userKey)
-			const userData = JSON.parse(json)
-			this.$store.commit('setUser', null)
+      const json = localStorage.getItem(userKey);
+      const userData = JSON.parse(json);
+      this.$store.commit("setUser", null);
 
-			if(!userData) {
-				this.validatingToken = false
-				this.$router.push({ name: 'auth' })
-				return
-			}
+      if (!userData) {
+        this.validatingToken = false;
+        this.$store.commit("setUser", null);
+        this.$router.push({ name: "login" });
+        return
+      }
 
-			const res = await axios.post(`${baseApiUrl}/validateToken`, userData)
+      const res = await axios.post(`${baseApiUrl}/validateToken`, userData);
 
-			if (res.data) {
-				this.$store.commit('setUser', userData)
-				
-			} else {
-				localStorage.removeItem(userKey)
-				this.$router.push({ name: 'login' })
-			}
+      if (res.data) {
+        this.$store.commit("setUser", userData);
+      } else {
+        localStorage.removeItem(userKey);
+        this.$router.push({ name: "login" });
+      }
 
-			this.validatingToken = false
-		}
+      this.validatingToken = false;
+    },
   },
-  created(){
-    this.validateToken()
-  }
+  created() {
+    this.validateToken();
+  },
 };
 </script>
 
@@ -61,13 +61,15 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
-#app, .app, body, html {
+#app,
+.app,
+body,
+html {
   margin: 0px;
   height: 100vh;
   width: 100vw;
   overflow-x: hidden;
-  overflow-y:hidden;
-  
+  overflow-y: hidden;
 }
 * {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -78,10 +80,9 @@ export default {
 .flexrow {
   display: flex;
   flex-direction: row;
-
 }
-.flexcolumn{
-    display: flex;
+.flexcolumn {
+  display: flex;
   flex-direction: column;
 }
 .flexcenter {
@@ -89,24 +90,24 @@ export default {
   align-items: center;
   justify-content: center;
 }
- h1 {
-    margin-top: 0;
-    margin-bottom:5px;
+h1 {
+  margin-top: 0;
+  margin-bottom: 5px;
 }
 .app {
   display: grid;
   grid-template-columns: 1fr 4fr;
   grid-template-rows: 50px 1fr;
-  grid-template-areas: 'header header'
-                        'content content';
+  grid-template-areas:
+    "header header"
+    "content content";
 }
 .loading {
   grid-area: content;
-
 }
 path {
   font-size: 50px;
-  padding: 10px
+  padding: 10px;
 }
 path:hover {
   cursor: pointer;
@@ -127,7 +128,7 @@ path:hover {
   margin-left: 20px;
 }
 .s-between {
-  justify-content: space-between
+  justify-content: space-between;
 }
 router-link {
   text-decoration: none;
@@ -141,14 +142,14 @@ router-link {
   border: var(--main-bg-color);
   padding: 10px;
   font-size: 1.2;
-  
+
   display: flex;
   justify-content: center;
   align-items: center;
   align-self: center;
 }
 
-.icon-button:hover{
+.icon-button:hover {
   cursor: pointer;
 }
 .border {
@@ -158,15 +159,15 @@ router-link {
   background-color: rgba(255, 255, 255, 0.075);
 }
 *::-webkit-scrollbar {
-  width: 12px;               /* width of the entire scrollbar */
+  width: 12px; /* width of the entire scrollbar */
 }
 
 *::-webkit-scrollbar-track {
-  background: rgb(49, 49, 49);        
+  background: rgb(49, 49, 49);
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: rgb(100, 100, 100);    /* color of the scroll thumb */
-  border-radius: 20px;       /* roundness of the scroll thumb */
+  background-color: rgb(100, 100, 100); /* color of the scroll thumb */
+  border-radius: 20px; /* roundness of the scroll thumb */
 }
 </style>

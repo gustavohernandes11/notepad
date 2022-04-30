@@ -126,6 +126,7 @@ export default {
 .menuheader {
   justify-content: space-between;
   align-items: center;
+  font-size: 1.5rem;
 }
 .menuheader > p {
   margin-bottom: 20px;

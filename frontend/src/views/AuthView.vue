@@ -47,11 +47,10 @@
         />
         <CommonButton
           v-else
-          class="mb-2 mt-2"
           value="Registrar"
           @click="signup()"
         />
-        <a v-if="this.showSignup" @click="toggleshowSignup()"
+        <a  v-if="this.showSignup" @click="toggleshowSignup()"
           >Não tem cadastro? Crie sua conta!</a
         >
         <a v-else @click="toggleshowSignup"
@@ -149,6 +148,7 @@ export default {
 }
 
 .authbox a {
+  margin-top: 20px;
   font-size: 0.8rem;
   font-weight: 100;
   text-decoration: none;

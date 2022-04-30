@@ -3,7 +3,7 @@ import axios from 'axios'
 import { baseApiUrl } from '../global'
 export default createStore({
   state: {
-    user: {},
+    user: null,
     notes: [],
     note: {},
     categories: [],
