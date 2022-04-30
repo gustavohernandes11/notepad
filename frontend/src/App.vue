@@ -105,10 +105,13 @@ export default {
 
 }
 .mt-1 {
-  margin-top: 10px
+  margin-top: 10px;
+}
+.mt-2 {
+  margin-top: 20px;
 }
 .mb-2 {
-  margin-bottom: 20px
+  margin-bottom: 20px;
 }
 .s-between {
   justify-content: space-between

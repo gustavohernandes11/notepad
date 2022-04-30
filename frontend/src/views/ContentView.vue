@@ -22,7 +22,6 @@
       <p v-if="this.$store.state.notes.length == 0">
         Não há anotações nessa categoria!
       </p>
-      <transition-group name="flip-list">
       <NoteCard
         v-for="note in this.$store.state.notes"
         :key="note.id"
@@ -32,7 +31,6 @@
         :content="note.content"
         @click="this.$store.commit('getNote', note)"
       />
-      </transition-group>
     </div>
     <EditMenu v-if="this.$store.state.isEditMode" />
   </div>
@@ -85,9 +83,7 @@ export default {
   background-color: rgb(22, 22, 22);
   overflow: hidden;
 }
-.flip-list-move {
-  transition: transform 1s;
-}
+
 .notesarea {
   border-right: 1px solid var(--color-border-grey);
   height: 100%;

@@ -1,8 +1,8 @@
 <template>
   <div class="authview flexcenter">
     <div class="authbox">
-      <b v-if="this.showSignup" class="mb-2">Login</b>
-      <b v-else class="mb-2">Cadastro</b>
+      <h1 v-if="this.showSignup" class="mb-2">Login</h1>
+      <h1 v-else class="mb-2">Cadastro</h1>
       <div class="inputs flexcolumn">
         <input
           v-model="this.user.name"

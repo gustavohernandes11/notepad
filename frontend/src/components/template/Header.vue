@@ -2,19 +2,21 @@
   <header class="header">
     <strong>!notePad</strong>
     <nav class="flexrow">
-      <router-link to="/"><CommonButton value="Home" /></router-link>
-      <router-link to="/admin"
-        ><CommonButton class="mr-2" 
-         value="Administração"
+      <span class="flex" v-if="this.$store.state.user.admin">
+      <router-link v-if="this.$store.state.user" to="/">
+        <CommonButton value="Home" />
+      </router-link>
+      <router-link  to="/admin">
+        <CommonButton class="mr-2" value="Administração"
       /></router-link>
-      <router-link  to="/login">
+      </span>
+      <router-link v-if="!this.$store.state.user" to="/login">
         <CommonButton value="Entrar"
       /></router-link>
-      <router-link to="/login">
+      <router-link v-else to="/login">
         <CommonButton value="Sair" @click="logout"
       /></router-link>
-      <CommonButton value="Show Info" @click="showinfo"
-      />
+      <CommonButton value="Show Info" @click="showinfo" />
     </nav>
   </header>
 </template>
@@ -25,28 +27,22 @@ import CommonButton from "../CommonButton.vue";
 import { userKey } from "@/global.js";
 export default {
   name: "Header",
-  data() {
-    return {
-    };
-  },
   components: {
     CommonButton,
   },
   methods: {
-    showinfo(){
-      console.log('localstorage: '+localStorage.getItem(userKey))
-      console.log('state user: '+ this.$store.state.user.id)
-      console.log(this.isLogged)
+    showinfo() {
+      console.log("localstorage: " + localStorage.getItem(userKey));
+      console.log("state user: " + this.$store.state.user);
     },
     logout() {
       localStorage.removeItem(userKey);
       this.$store.commit("setUser", null);
+      this.$store.commit("setEditMode", null);
       this.$router.push({ path: "/login" });
     },
   },
-  mounted() {
-    console.log(this.isLogged);
-  },
+
 };
 </script>
 
