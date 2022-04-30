@@ -1,25 +1,62 @@
 <template>
   <div class="authview flexcenter">
     <div class="authbox">
-      <b class="mb-2">Faça login</b>
+      <b v-if="this.showSignup" class="mb-2">Login</b>
+      <b v-else class="mb-2">Cadastro</b>
       <div class="inputs flexcolumn">
-        <CommonInput
+        <input
+          v-model="this.user.name"
+          v-if="!this.showSignup"
+          placeholder="Nome"
+          name="name"
+          type="text"
+          id="inputname"
+        />
+        <input
+          required
+          v-model="this.user.email"
           placeholder="Email"
           name="email"
           type="email"
           id="inputemail"
         />
-        <CommonInput
+        <input
+          required
+          v-model="this.user.password"
           placeholder="Senha"
           name="password"
           type="password"
           id="inputpassword"
         />
+        <input
+          v-model="this.user.confirmPassword"
+          v-if="!showSignup"
+          placeholder="Confirme sua senha"
+          name="confirmPassword"
+          type="password"
+          id="inputconfirmpassword"
+        />
       </div>
-
+ 
       <div class="actions">
-        <CommonButton class="mb-2" value="Enviar" />
-        <a href="/signup">Não tem cadastro? Crie sua conta!</a>
+        <CommonButton
+          v-if="showSignup"
+          class="mb-2 mt-2"
+          value="Enviar"
+          @click="signin(); showconsole();"
+        />
+        <CommonButton
+          v-else
+          class="mb-2 mt-2"
+          value="Registrar"
+          @click="signup()"
+        />
+        <a v-if="this.showSignup" @click="toggleshowSignup()"
+          >Não tem cadastro? Crie sua conta!</a
+        >
+        <a v-else @click="toggleshowSignup"
+          >Ja possui uma conta: faça login!</a
+        >
       </div>
     </div>
   </div>
@@ -27,12 +64,63 @@
 
 <script>
 import CommonButton from "../components/CommonButton.vue";
-import CommonInput from "../components/CommonInput.vue";
+import axios from "axios";
+import { baseApiUrl, userKey } from "@/global.js";
+
 export default {
   name: "authView",
   components: {
     CommonButton,
-    CommonInput,
+  },
+  data: function () {
+    return {
+      showSignup: true,
+      user: {
+        name: '', 
+        email: '', 
+        password: '', 
+        confirmPassword: ''
+      },
+    };
+  },
+  methods: {
+    showconsole() {
+      console.log(this.user);
+    },
+    toggleshowSignup() {
+      this.showSignup = !this.showSignup;
+      this.user.password = "";
+      this.user.confirmPassword = "";
+    },
+    signin() {
+      console.log('signin' + this.user);
+
+      const url = `${baseApiUrl}/signin`;
+      axios
+        .post(url, this.user)
+        .then((res) => {
+          console.log("Logado", res.data);
+          this.$store.commit("setUser", res.data);
+          localStorage.setItem(userKey, JSON.stringify(res.data));
+          this.$router.push({ path: "/" });
+        })
+        .catch((e) => console.log(e));
+    },
+    signup() {
+      console.log('signup' + this.user);
+
+      const url = `${baseApiUrl}/signup`;
+      axios
+        .post(url, this.user)
+        .then((res) => {
+          console.log("Registrado", res.data);
+          this.user = {};
+          this.showSignup = true;
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
   },
 };
 </script>
@@ -46,24 +134,26 @@ export default {
   height: 100%;
 }
 .authbox {
-  min-height: 350px;
-  min-width: 300px;
+  padding: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  padding: 10px;
-  border-radius: 5px;
-  background-color: rgba(255, 255, 255, 0.027);
-  border: 1px solid var(--color-border-grey);
+
 }
 .authbox button {
-  width: 40px
+  width: 30px;
+}
+.authbox input {
+  width: 260px;
 }
 
 .authbox a {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   font-weight: 100;
   text-decoration: none;
+}
+.authbox a:hover {
+  cursor: pointer;
 }
 </style>

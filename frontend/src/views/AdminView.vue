@@ -36,7 +36,7 @@
           <input
             type="checkbox"
             v-model="user.admin"
-            value="Admin"
+            value="true"
             id="admin"
           />
           <label for="checkbox">Admin</label>
@@ -139,7 +139,7 @@ export default {
         .then((res) => ((this.user = res.data), (this.user.password = "")));
     },
     sendCurrentUser() {
-      console.log(this.user, this.isAdminEditMode);
+      console.log(this.user)
       if (this.user.id) {
         const url = `${baseApiUrl}/users/${this.user.id}`;
         axios.put(url, this.user).then(() => console.log("put"));

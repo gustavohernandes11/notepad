@@ -1,15 +1,53 @@
 <template>
   <div class="app">
     <Header />
-    <router-view />
+    <router-view v-if="!validatingToken" />
+    <div v-else class="loading">Validando</div>
   </div>
 </template>
 <script>
 import Header from "./components/template/Header.vue";
+import { userKey, baseApiUrl } from './global'
+import axios from 'axios'
 export default {
   components: {
     Header,
   },
+  data(){
+      return {
+        validatingToken: true
+    }
+  },
+  methods: {
+    async validateToken() {
+			this.validatingToken = true
+
+			const json = localStorage.getItem(userKey)
+			const userData = JSON.parse(json)
+			this.$store.commit('setUser', null)
+
+			if(!userData) {
+				this.validatingToken = false
+				this.$router.push({ name: 'auth' })
+				return
+			}
+
+			const res = await axios.post(`${baseApiUrl}/validateToken`, userData)
+
+			if (res.data) {
+				this.$store.commit('setUser', userData)
+				
+			} else {
+				localStorage.removeItem(userKey)
+				this.$router.push({ name: 'login' })
+			}
+
+			this.validatingToken = false
+		}
+  },
+  created(){
+    this.validateToken()
+  }
 };
 </script>
 
@@ -61,6 +99,10 @@ export default {
   grid-template-rows: 50px 1fr;
   grid-template-areas: 'header header'
                         'content content';
+}
+.loading {
+  grid-area: content;
+
 }
 .mt-1 {
   margin-top: 10px

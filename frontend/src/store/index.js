@@ -3,6 +3,7 @@ import axios from 'axios'
 import { baseApiUrl } from '../global'
 export default createStore({
   state: {
+    user: {},
     notes: [],
     note: {},
     categories: [],
@@ -12,8 +13,19 @@ export default createStore({
 
   },
   getters: {
-  },
+  }, 
   mutations: {
+    setUser(state, user){
+      state.user = user
+      
+      if (user) {
+        axios.defaults.headers.common['Authorization'] = `bearer ${user.token}`
+
+      } else {
+        delete axios.defaults.headers.common['Authorization']
+
+      }
+    },
     deleteCurrentNote(state) {
       const url = `${baseApiUrl}/notes/${state.note.id}`;
       axios.delete(url, state.note).then(() => {
@@ -56,17 +68,7 @@ export default createStore({
         state.loadNotes()
       });
     },
-    toggleFavorite(state) {
-      console.log('setfavorite', state.note)
-      const url = `${baseApiUrl}/notes/${state.note.id}`;
-      state.note.favorite
-        ? (state.note.favorite = false)
-        : (state.note.favorite = true);
 
-      axios.put(url, state.note).then(() => {
-        console.log('put')
-      }).catch(e => console.log('Deu erro: ' + e));
-    },
     resetCategory(state, category = null) {
       if (category === null) { state.category = {} } else {
         state.category = category
