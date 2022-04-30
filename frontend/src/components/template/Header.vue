@@ -3,32 +3,32 @@
     <strong>!notePad</strong>
     <nav class="flexrow">
       <span class="flexrow" v-if="this.$store.state.user.admin">
-      <router-link v-if="this.$store.state.user" to="/">
-        <CommonButton value="Home" />
-      </router-link>
-      <router-link  to="/admin">
-        <CommonButton class="mr-2" value="Administração"
-      /></router-link>
+        <router-link v-if="this.$store.state.user" to="/">
+          <button class="icon-button" ><i class="fa-solid fa-house"></i></button>
+        </router-link>
+        <router-link to="/admin">
+          <button class="icon-button mr-2" ><i class="fa-solid fa-gear"></i></button></router-link>
       </span>
       <router-link v-if="!this.$store.state.user" to="/login">
-        <CommonButton value="Entrar"
+        <button class="button-icon" value="Entrar"
       /></router-link>
       <router-link v-else to="/login">
-        <CommonButton value="Sair" @click="logout"
-      /></router-link>
-      <CommonButton value="Show Info" @click="showinfo" />
+        <button class="icon-button" @click="logout">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
+      </router-link>
     </nav>
   </header>
 </template>
 
 <script>
 /* eslint-disable vue/multi-word-component-names */
-import CommonButton from "../CommonButton.vue";
+// import CommonButton from "../CommonButton.vue";
 import { userKey } from "@/global.js";
 export default {
   name: "Header",
   components: {
-    CommonButton,
+    // CommonButton,
   },
   methods: {
     showinfo() {
@@ -42,7 +42,6 @@ export default {
       this.$router.push({ path: "/login" });
     },
   },
-
 };
 </script>
 

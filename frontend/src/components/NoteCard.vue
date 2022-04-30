@@ -8,26 +8,32 @@
     </div>
     <div class="notefooter s-between flexrow">
       <span class="flexrow">
-        <CommonButton
+        <button
+          class="icon-button border"
           value="Edit"
           @click="this.$store.commit('setEditMode', 'edit')"
-        />
-
-        {{}}
-        <CommonButton
+        >
+          <i class="fa-solid fa-marker"></i>
+        </button>
+        <button
+          class="icon-button border"
           v-if="!this.showConfirmButton"
           value="Delete"
           @click="this.toggleConfirm()"
-        />
-        <CommonButton
+        >
+          <i class="fa-solid fa-trash-can border"></i>
+        </button>
+        <button
+          class="icon-button danger"
           v-if="!!this.showConfirmButton"
           value="Confirmar"
           @click="
             this.$store.commit('deleteCurrentNote');
             this.$store.commit('loadNotes');
-            
           "
-        />
+        >
+          <i class="fa-solid fa-trash-can"></i> 
+        </button>
       </span>
       <div class="flexrow">
         <div v-if="favorite" class="icon">★</div>
@@ -39,11 +45,7 @@
 
 <script>
 // "☆★"
-import CommonButton from "./CommonButton.vue";
 export default {
-  components: {
-    CommonButton,
-  },
   props: {
     noteTitle: String,
     content: String,
@@ -69,11 +71,11 @@ export default {
 
 <style>
 .notecard {
-  min-height: 200px;
   min-width: 200px;
   border-radius: 5px;
   margin: 5px;
-  border: 1px solid var(--color-border-grey);
+  /* border: 1px solid var(--color-border-grey); */
+  box-shadow: rgba(0, 0, 0, 0.192);
   background-color: var(--main-bg-color);
   padding: 12px;
   font-size: 0.8rem;
@@ -109,4 +111,12 @@ export default {
   align-items: center;
   justify-content: space-between;
 }
+* > .notefooter {
+ font-size: 1.0rem;
+}
+.danger {
+  background-color: rgb(221, 74, 74)
+}
+
+
 </style>

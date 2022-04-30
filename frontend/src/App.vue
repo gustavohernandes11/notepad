@@ -73,7 +73,7 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   box-sizing: border-box;
   border-collapse: collapse;
-  color: rgb(224, 224, 224);
+  color: rgb(233, 233, 233);
 }
 .flexrow {
   display: flex;
@@ -104,6 +104,13 @@ export default {
   grid-area: content;
 
 }
+path {
+  font-size: 50px;
+  padding: 10px
+}
+path:hover {
+  cursor: pointer;
+}
 .mt-1 {
   margin-top: 10px;
 }
@@ -124,5 +131,42 @@ export default {
 }
 router-link {
   text-decoration: none;
+}
+.icon-button {
+  height: 30px;
+  color: white;
+  width: 30px;
+  border-radius: 5px;
+  background-color: var(--main-bg-color);
+  border: var(--main-bg-color);
+  padding: 10px;
+  font-size: 1.2;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+}
+
+.icon-button:hover{
+  cursor: pointer;
+}
+.border {
+  border-radius: 5px;
+  margin: 2px;
+  /* border: 1px solid var(--color-border-grey); */
+  background-color: rgba(255, 255, 255, 0.075);
+}
+*::-webkit-scrollbar {
+  width: 12px;               /* width of the entire scrollbar */
+}
+
+*::-webkit-scrollbar-track {
+  background: rgb(49, 49, 49);        
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgb(100, 100, 100);    /* color of the scroll thumb */
+  border-radius: 20px;       /* roundness of the scroll thumb */
 }
 </style>

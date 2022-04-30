@@ -5,22 +5,26 @@
       <div class="notesareaheader flexcolumn">
         <span class="flexrow">
           <h1>Anotações</h1>
-          <CommonButton v-if="this.$store.state.isEditMode !== 'add'"
-            value="Adicionar nota"
-            @click="handleAdd();"
-          />
+          <div
+            class="addNoteButton"
+            v-if="this.$store.state.isEditMode === null"
+            @click="handleAdd()"
+          >
+            <i class="fa-solid fa-circle-plus"></i>
+          </div>
         </span>
-        <span class="flexrow" >
+        <span class="flexrow">
+          <h2 class="mr-2">
+            {{
+              this.$store.state.category.name
+                ? this.$store.state.category.name
+                : "Todos"
+            }}
+          </h2>
 
-        <h2 class="mr-2">
-          {{
-            this.$store.state.category.name
-              ? this.$store.state.category.name
-              : "Todos"
-          }}
-        </h2>
-
-        <button @click="deleteCategory()" >Deletar categoria</button>
+          <button class="icon-button border" @click="deleteCategory()">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
         </span>
       </div>
       <p v-if="this.$store.state.notes.length == 0">
@@ -44,11 +48,9 @@
 /* eslint-disable vue/multi-word-component-names */
 import EditMenu from "../components/EditMenu.vue";
 import NoteCard from "../components/NoteCard.vue";
-import CommonButton from "../components/CommonButton.vue";
 import Menu from "../components/template/Menu.vue";
-import axios from 'axios'
-import { baseApiUrl } from '@/global'
-
+import axios from "axios";
+import { baseApiUrl } from "@/global";
 
 export default {
   name: "content",
@@ -56,13 +58,12 @@ export default {
     NoteCard,
     Menu,
     EditMenu,
-    CommonButton,
   },
   data() {
     return {};
   },
   methods: {
-      getCategories() {
+    getCategories() {
       const url = `${baseApiUrl}/categories`;
       axios.get(url).then((res) => {
         this.$store.state.categories = res.data;
@@ -76,15 +77,19 @@ export default {
     },
     handleAdd() {
       this.$store.commit("resetNote");
-      this.$store.commit("setEditMode", 'add');
+      this.$store.commit("setEditMode", "add");
     },
-    deleteCategory(){
-      const url = `${baseApiUrl}/categories/${this.$store.state.category.id}`
-      axios.delete(url, this.$store.state.category).then(() => {
-      this.$store.commit("toUploadMenu");
-      this.getCategories()
-      }).catch(e => console.log(e))
-    }
+    deleteCategory() {
+      const url = `${baseApiUrl}/categories/${this.$store.state.category.id}`;
+      axios
+        .delete(url, this.$store.state.category)
+        .then(() => {
+          this.$store.commit("toUploadMenu");
+          this.$store.commit("setCategory", null);
+          this.getCategories();
+        })
+        .catch((e) => console.log(e));
+    },
   },
 
   mounted() {
@@ -101,27 +106,18 @@ export default {
   border-right: 1px solid var(--color-border-grey);
   display: flex;
   flex-direction: row;
-  background-color: rgb(22, 22, 22);
+  background-color: rgb(48, 48, 48);
   overflow: hidden;
 }
-.content button {
-    height: 20px;
-    border-radius: 5px;
-    background-color: none;
-    border: 1px solid var(--color-border-grey);
-    background-color: var(--main-bg-color);
-    padding: 15px;
-    margin: 5px;
-    font-size: 0.8rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-self: center;
-}
-.content button:hover{
-  cursor: pointer;
-}
 
+* > .addNoteButton {
+  font-size: 45px;
+}
+.addNoteButton {
+  position: fixed;
+  top: 100px;
+  right: 50px;
+}
 .notesarea {
   border-right: 1px solid var(--color-border-grey);
   height: 100%;
@@ -129,7 +125,7 @@ export default {
   flex-grow: 3;
   flex-wrap: wrap;
   padding: 40px 15px;
-  overflow-y:auto;
+  overflow-y: auto;
 }
 .notesareaheader {
   width: 100%;
