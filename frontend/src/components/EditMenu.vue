@@ -66,7 +66,7 @@ export default {
         axios.put(url, this.$store.state.note).then(() => {
           this.$store.commit('resetNote', null);
           this.$store.commit('loadNotes');
-        });
+        }).catch(e => alert(e));
       } else {
         const url = `${baseApiUrl}/notes`;
 

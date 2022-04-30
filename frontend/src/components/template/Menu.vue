@@ -78,7 +78,7 @@ export default {
       axios.get(url).then((res) => {
         this.$store.state.categories = res.data;
         this.$store.commit("loadNotes");
-      });
+      }).catch(e => alert(e));
     },
     getCategory(category) {
       if (category === null) {
