@@ -2,7 +2,7 @@
   <header class="header">
     <strong>!notePad</strong>
     <nav class="flexrow">
-      <span class="flex" v-if="this.$store.state.user.admin">
+      <span class="flexrow" v-if="this.$store.state.user.admin">
       <router-link v-if="this.$store.state.user" to="/">
         <CommonButton value="Home" />
       </router-link>
@@ -33,7 +33,7 @@ export default {
   methods: {
     showinfo() {
       console.log("localstorage: " + localStorage.getItem(userKey));
-      console.log("state user: " + this.$store.state.user);
+      console.log("state category: " + this.$store.state.category);
     },
     logout() {
       localStorage.removeItem(userKey);

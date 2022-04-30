@@ -9,7 +9,8 @@ export default createStore({
     categories: [],
     category: {},
     isEditMode: null,
-    isMenuOpen: true
+    isEditCategoryMode: null,
+    isMenuOpen: true,
 
   },
   getters: {
@@ -26,6 +27,7 @@ export default createStore({
 
       }
     },
+
     deleteCurrentNote(state) {
       const url = `${baseApiUrl}/notes/${state.note.id}`;
       axios.delete(url, state.note).then(() => {
@@ -45,6 +47,9 @@ export default createStore({
 
     setEditMode(state, mode) {
       state.isEditMode = mode
+    },
+    setEditCategoryMode(state, mode){
+      state.isEditCategoryMode = mode
     },
     loadNotes(state) {
       console.log('loadNotes')
@@ -69,7 +74,7 @@ export default createStore({
       });
     },
 
-    resetCategory(state, category = null) {
+    setCategory(state, category = null) {
       if (category === null) { state.category = {} } else {
         state.category = category
       }
@@ -84,6 +89,7 @@ export default createStore({
       this.$store.commit("loadNotes");
       this.$store.commit("loadCategories");
     },
+
 
   },
   actions: {
