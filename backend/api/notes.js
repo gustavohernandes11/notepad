@@ -32,27 +32,32 @@ module.exports = app => {
 
     }
     const get = async (req, res) => {
-        
+        let param = req.query.userId
+
         app.db('notes')
             .select('id', 'title', 'favorite', 'category_id', 'content', 'createdAt', 'user_id', 'important')
+            .where({user_id: param})
             .then(notes => res.json(notes))
             .catch(e => res.status(400).send(e))
     }
 
     const getById = (req, res) => {
+        let param = req.query.userId
 
         
         app.db('notes')
             .select('id', 'category_id', 'favorite', 'content',  'createdAt', 'user_id', 'important')
-            .where({ id: req.params.id })
+            .where({ id: req.params.id, user_id: param })
             .first()
             .then(note => res.json(note))
             .catch(e => res.status(500).send(e))
     }
 
     const remove = (req, res) => {
+        let param = req.query.userId
+
         app.db('notes')
-            .where({ id: req.params.id })
+            .where({ id: req.params.id, user_id: param })
             .del()
             .then(_ => res.status(204).send())
             .catch(e => res.status(400).send(e))

@@ -75,7 +75,8 @@ export default {
 
     getCategories() {
       const url = `${baseApiUrl}/categories`;
-      axios.get(url, this.$store.state.user.id).then((res) => {
+      const userId = this.$store.state.user.id
+      axios.get(url, {params: { userId }}).then((res) => {
         this.$store.state.categories = res.data;
         this.$store.commit("loadNotes");
       }).catch(() => console.log(this.$store.state.user.id));
@@ -85,8 +86,10 @@ export default {
         this.$store.commit("setCategory");
         this.$store.commit("loadNotes");
       }
+
       const url = `${baseApiUrl}/categories/${category.id}`;
-      axios.get(url).then((res) => {
+            const userId = this.$store.state.user.id
+      axios.get(url, {params: { userId }}).then((res) => {
         this.$store.state.category = res.data;
         this.$store.commit("loadNotes");
         console.log(this.$store.state.category);

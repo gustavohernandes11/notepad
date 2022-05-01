@@ -39,17 +39,22 @@ module.exports = app => {
 
     }
     const get = (req, res) => {
+        let param = req.query.userId
+
         
         app.db('categories')
         .select('id', 'name', 'color', 'user_id')
+        .where({ user_id: param})
             .then(categories => res.json(categories))
             .catch(e => res.status(400).send(e))
     }
 
     const getById = (req, res) => {
+        let param = req.query.userId
+
         app.db('categories')
         .select('id', 'name', 'color', 'user_id')
-            .where({ id: req.params.id })
+            .where({ id: req.params.id, user_id: param })
             .first()
             .then(category => res.json(category))
             .catch(e => res.status(500).send(e))
@@ -58,9 +63,11 @@ module.exports = app => {
 
 
     const remove = async (req, res) => {
+        let param = req.query.userId
+
         try {
             const relatedNotes = await app.db('notes')
-            .where({ category_id: req.params.id })
+            .where({ category_id: req.params.id, user_id: param })
             notExistsOrError(relatedNotes, 'Categoria possui notas relacionadas')
 
             await app.db('categories')

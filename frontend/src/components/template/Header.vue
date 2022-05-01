@@ -45,6 +45,8 @@ export default {
       this.$store.commit("setUser", null);
       this.$store.commit("setEditMode", null);
       this.$router.push({ path: "/login" });
+      this.$store.commit("setCategory");
+
     },
   },
 };

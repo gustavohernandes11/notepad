@@ -14,11 +14,11 @@ export default createStore({
 
   },
   getters: {
-  }, 
+  },
   mutations: {
-    setUser(state, user){
+    setUser(state, user) {
       state.user = user
-      
+
       if (user) {
         axios.defaults.headers.common['Authorization'] = `bearer ${user.token}`
 
@@ -40,7 +40,8 @@ export default createStore({
     },
     getNote(state, note) {
       const url = `${baseApiUrl}/notes/${note.id}`;
-      axios.get(url).then((res) => {
+      const userId = state.user.id
+      axios.get(url, {params: { userId }}).then((res) => {
         state.note = res.data;
       });
     },
@@ -48,26 +49,26 @@ export default createStore({
     setEditMode(state, mode) {
       state.isEditMode = mode
     },
-    setEditCategoryMode(state, mode){
+    setEditCategoryMode(state, mode) {
       state.isEditCategoryMode = mode
     },
     loadNotes(state) {
       console.log('loadNotes')
       const url = `${baseApiUrl}/notes`;
-      axios.get(url).then((res) => {
+      const userId = state.user.id
+      axios.get(url, {params: { userId }}).then((res) => {
         if (state.category.id) {
           state.notes = res.data.filter(note => note.category_id === state.category.id)
-          console.log('filtrou')
         } else {
           state.notes = res.data;
-          console.log('nao filtrou')
         }
         console.log(state.notes);
       });
     },
     loadCategories(state) {
       const url = `${baseApiUrl}/categories`;
-      axios.get(url).then((res) => {
+      const userId = state.user.id
+      axios.get(url, {params: { userId }}).then((res) => {
         state.categories = res.data;
         state.loadNotes()
       });
