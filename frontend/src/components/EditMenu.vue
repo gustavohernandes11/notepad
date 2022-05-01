@@ -14,7 +14,6 @@
         :key="category.id"
         :value="category.id"
         :selected="this.$store.state.category.id === category.id"
-
       >
         {{ category.name }}
       </option>
@@ -33,11 +32,9 @@
       placeholder="Conteúdo"
       v-model="this.$store.state.note.content"
     />
+    <!-- <input type="hidden" name="user_id" :value="this.$store.state.user.id" v-model="this.$store.state.note.user_id"> -->
     <CommonButton value="Cancelar" @click="reset()" />
-    <CommonButton
-      value="Enviar"
-      @click="sendCurrentNote()"
-   />
+    <CommonButton value="Enviar" @click="sendCurrentNote()" />
   </div>
 </template>
 
@@ -52,7 +49,7 @@ export default {
   },
   data() {
     return {
-      selectedCategoryId: Number
+      selectedCategoryId: Number,
     };
   },
   methods: {
@@ -61,16 +58,22 @@ export default {
         const url = `${baseApiUrl}/notes/${this.$store.state.note.id}`;
 
         this.$store.state.note.category_id = this.selectedCategoryId;
-        console.log(this.$store.state.note)
+        this.$store.state.user.id = this.$store.state.note.user_id;
 
-        axios.put(url, this.$store.state.note).then(() => {
-          this.$store.commit('resetNote', null);
-          this.$store.commit('loadNotes');
-        }).catch(e => alert(e));
+        console.log(this.$store.state.note);
+
+        axios
+          .put(url, this.$store.state.note)
+          .then(() => {
+            this.$store.commit("resetNote", null);
+            this.$store.commit("loadNotes");
+          })
+          .catch((e) => alert(e));
       } else {
         const url = `${baseApiUrl}/notes`;
 
         this.$store.state.note.category_id = this.selectedCategoryId;
+        this.$store.state.note.user_id = this.$store.state.user.id;
 
         axios.post(url, this.$store.state.note).then(() => {
           this.$store.commit("resetNote");

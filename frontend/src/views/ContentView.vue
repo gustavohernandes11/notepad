@@ -65,6 +65,7 @@ export default {
   methods: {
     getCategories() {
       const url = `${baseApiUrl}/categories`;
+
       axios.get(url).then((res) => {
         this.$store.state.categories = res.data;
         this.$store.commit("loadNotes");

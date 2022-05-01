@@ -18,23 +18,23 @@ module.exports = app => {
         .delete(app.api.users.remove)
 
     app.route('/categories')
-        .all(app.config.passport.authenticate())
+        // .all(app.config.passport.authenticate())
         .get(app.api.categories.get)
         .post(app.api.categories.save)
 
     app.route('/categories/:id')
-        .all(app.config.passport.authenticate())
+        // .all(app.config.passport.authenticate())
         .get(app.api.categories.getById)
         .put(app.api.categories.save)
         .delete(app.api.categories.remove)
 
     app.route('/notes')
-        .all(app.config.passport.authenticate())
+        // .all(app.config.passport.authenticate())
         .get(app.api.notes.get)
         .post(app.api.notes.save)
 
     app.route('/notes/:id')
-        .all(app.config.passport.authenticate())
+        // .all(app.config.passport.authenticate())
         .get(app.api.notes.getById)
         .put(app.api.notes.save)
         .delete(app.api.notes.remove)

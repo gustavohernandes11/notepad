@@ -53,7 +53,6 @@ export default createStore({
     },
     loadNotes(state) {
       console.log('loadNotes')
-
       const url = `${baseApiUrl}/notes`;
       axios.get(url).then((res) => {
         if (state.category.id) {
@@ -63,7 +62,7 @@ export default createStore({
           state.notes = res.data;
           console.log('nao filtrou')
         }
-        console.log(this.$store.state.notes);
+        console.log(state.notes);
       });
     },
     loadCategories(state) {

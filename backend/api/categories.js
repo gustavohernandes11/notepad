@@ -39,8 +39,9 @@ module.exports = app => {
 
     }
     const get = (req, res) => {
+        
         app.db('categories')
-            .select('id', 'name', 'color', 'user_id')
+        .select('id', 'name', 'color', 'user_id')
             .then(categories => res.json(categories))
             .catch(e => res.status(400).send(e))
     }

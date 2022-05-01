@@ -75,10 +75,10 @@ export default {
 
     getCategories() {
       const url = `${baseApiUrl}/categories`;
-      axios.get(url).then((res) => {
+      axios.get(url, this.$store.state.user.id).then((res) => {
         this.$store.state.categories = res.data;
         this.$store.commit("loadNotes");
-      }).catch(e => alert(e));
+      }).catch(() => console.log(this.$store.state.user.id));
     },
     getCategory(category) {
       if (category === null) {

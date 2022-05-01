@@ -38,7 +38,7 @@
       <div class="flexrow">
         <div v-if="favorite" class="icon">★</div>
       </div>
-      <p>{{ category.color }}</p>
+      
     </div>
   </div>
 </template>
