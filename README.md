@@ -13,3 +13,6 @@ secundário:
  - Filtro por favorito, data de criação, importante.
  - Cores por categorias.
  - Categoria pré-selecionada ao criar nova nota.
+
+finalizando: 
+- Deploy da aplicação
