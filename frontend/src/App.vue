@@ -169,7 +169,7 @@ router-link {
   background-color: rgba(255, 255, 255, 0.075);
 }
 *::-webkit-scrollbar {
-  width: 12px; /* width of the entire scrollbar */
+  width: 12px; 
 }
 
 *::-webkit-scrollbar-track {
@@ -177,14 +177,14 @@ router-link {
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: rgb(100, 100, 100); /* color of the scroll thumb */
-  border-radius: 20px; /* roundness of the scroll thumb */
+  background-color: rgb(100, 100, 100); 
+  border-radius: 20px;
 }
 .displayMsg {
   background-clip: rgb(175, 57, 57);
   position: fixed;
   top: 100px;
-  right: 250px;
+  right: 50%;
   max-width: 500px;
 }
 </style>

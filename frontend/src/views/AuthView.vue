@@ -1,6 +1,6 @@
 <template>
-  <div class="authview flexcenter">
-    <div  v-if="this.$store.state.msg" class="displayMsg">
+  <div @click="this.$store.commit('setMsg', null)" class="authview flexcenter">
+    <div v-if="this.$store.state.msg !== null"  class="displayMsg">
       <i class="fa-solid fa-circle-exclamation"></i> {{ this.$store.state.msg }}
     </div>
     <div class="authbox">

@@ -1,6 +1,5 @@
 <template>
-  <div class="adminbox flexrow">
-    
+  <div @click="this.$store.commit('setMsg', null)" class="adminbox flexrow">
     <div v-if="isAdminEditMode" class="editbox flexcolumn">
       <b class="mt-2 mb-2">Modo de Edição</b>
 

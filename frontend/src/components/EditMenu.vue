@@ -19,13 +19,16 @@
       </option>
     </select>
     <input
+      name="title"
       type="text"
+      maxlength="200"
       id="inputtitle"
       placeholder="Título"
       v-model="this.$store.state.note.title"
     />
     <textarea
       name="content"
+      maxlength="999"
       id="content"
       cols="30"
       rows="10"
@@ -68,19 +71,20 @@ export default {
             this.$store.commit("resetNote", null);
             this.$store.commit("loadNotes");
           })
-        .catch((e) => this.$store.commit("setMsg", e.response.data));
-         
+          .catch((e) => this.$store.commit("setMsg", e.response.data));
       } else {
         const url = `${baseApiUrl}/notes`;
 
         this.$store.state.note.category_id = this.selectedCategoryId;
         this.$store.state.note.user_id = this.$store.state.user.id;
 
-        axios.post(url, this.$store.state.note).then(() => {
-          this.$store.commit("resetNote");
-          this.$store.commit("loadNotes");
-        })
-        .catch((e) => this.$store.commit("setMsg", e.response.data));
+        axios
+          .post(url, this.$store.state.note)
+          .then(() => {
+            this.$store.commit("resetNote");
+            this.$store.commit("loadNotes");
+          })
+          .catch((e) => this.$store.commit("setMsg", e.response.data));
       }
     },
     reset() {

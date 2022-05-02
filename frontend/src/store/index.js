@@ -92,7 +92,7 @@ export default createStore({
       }
     },
     setMsg(state, msg){
-      state.msg = msg
+        state.msg = msg;
     },
     reset() {
       this.$store.commit("setEditMode", null);

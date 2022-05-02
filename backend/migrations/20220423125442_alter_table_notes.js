@@ -1,7 +1,7 @@
 
 exports.up = function(knex, Promise) {
     return knex.schema.alterTable('notes', table => {
-        table.string('content').notNull()
+        table.string('content', 1000).notNull()
       })
 };
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div @click="this.$store.commit('setMsg', null)" class="content">
     <div  v-if="this.$store.state.msg" class="displayMsg">
       <i class="fa-solid fa-circle-exclamation"></i> {{ this.$store.state.msg }}
     </div>

@@ -36,7 +36,7 @@
         </button>
       </span>
       <div class="flexrow">
-        <div v-if="favorite" class="icon">★</div>
+        <div v-if="favorite" class="icon" >★</div>
         <div v-else class="icon">☆</div>
       </div>
       
@@ -56,6 +56,7 @@ export default {
   date() {
     return {
       showConfirmButton: false,
+      note: null
     };
   },
   methods: {
