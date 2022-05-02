@@ -8,6 +8,7 @@ export default createStore({
     note: {},
     categories: [],
     category: {},
+    msg: null,
     isEditMode: null,
     isEditCategoryMode: null,
     isMenuOpen: true,
@@ -30,20 +31,24 @@ export default createStore({
 
     deleteCurrentNote(state) {
       const url = `${baseApiUrl}/notes/${state.note.id}`;
+      
       axios.delete(url, state.note).then(() => {
         console.log('deletou')
         this.$store.commit("resetNote");
         this.$store.commit("loadNotes");
         this.$store.commit("setEditMode", null);
 
-      });
+      })
+      .catch((e) => this.$store.commit("setMsg", e.response.data));
+      
     },
     getNote(state, note) {
       const url = `${baseApiUrl}/notes/${note.id}`;
       const userId = state.user.id
       axios.get(url, {params: { userId }}).then((res) => {
         state.note = res.data;
-      });
+      })
+      .catch((e) => this.$store.commit("setMsg", e.response.data));
     },
 
     setEditMode(state, mode) {
@@ -63,7 +68,8 @@ export default createStore({
           state.notes = res.data;
         }
         console.log(state.notes);
-      });
+      })
+        .catch((e) => this.$store.commit("setMsg", e.response.data));
     },
     loadCategories(state) {
       const url = `${baseApiUrl}/categories`;
@@ -71,7 +77,8 @@ export default createStore({
       axios.get(url, {params: { userId }}).then((res) => {
         state.categories = res.data;
         state.loadNotes()
-      });
+      })
+        .catch((e) => this.$store.commit("setMsg", e.response.data));
     },
 
     setCategory(state, category = null) {
@@ -83,6 +90,9 @@ export default createStore({
       if (note === null) { state.note = {} } else {
         state.note = note
       }
+    },
+    setMsg(state, msg){
+      state.msg = msg
     },
     reset() {
       this.$store.commit("setEditMode", null);

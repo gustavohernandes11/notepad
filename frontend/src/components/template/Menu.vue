@@ -5,13 +5,22 @@
       <button
         class="flexcenter icon-button"
         @click="setAddMode('add')"
-        v-if="this.$store.state.isEditCategoryMode === null"
+        v-if="this.$store.state.isEditCategoryMode === null && this.$store.state.categories.length !== 0"
         value="+"
       >
-        <i class="fa-solid fa-square-plus"></i>
+        <i class="fa-solid fa-folder-plus"></i>
       </button>
     </div>
-    <span class="flexrow" v-if="this.$store.state.isEditCategoryMode === 'add'">
+    <div
+        v-if="
+          this.$store.state.categories.length === 0 && this.$store.state.isEditCategoryMode !== 'add'"
+        class="flexrow addCategoriaCard "
+        @click="setAddMode('add')"
+      >
+      <i class="fa-solid fa-plus mr-2"></i>
+        <p>Adiconar categoria</p>
+      </div>
+    <span class="flexrow mb-2" v-if="this.$store.state.isEditCategoryMode === 'add'">
       <input
         v-model="this.category.name"
         type="text"
@@ -24,7 +33,7 @@
         <i class="fa-solid fa-arrow-right-long"></i>
       </button>
     </span>
-    <CategoryCard name="All" @click="getCategory(null)" />
+    <CategoryCard  name="All" @click="getCategory(null)" />
     <CategoryCard
       v-for="category in this.$store.state.categories"
       :key="category.id"
@@ -116,15 +125,35 @@ export default {
 }
 
 .menu input {
-  height: 30px;
+  /* height: 40px; */
   width: 100px;
   flex-grow: 4;
   border-radius: 5px;
   background-color: var(--main-bg-color);
   border: 1px solid var(--color-border-grey);
   padding: 15px;
-  margin: 3px;
+  margin: 5px;
   font-size: 0.8rem;
+}
+.addCategoriaCard {
+ min-width: 20px;
+  border-radius: 5px;
+  margin: 5px;
+  box-shadow: rgba(0, 0, 0, 0.192);
+  background-color: var(--main-bg-color);
+  border: 1px dashed var(--color-border-grey);
+
+  padding: 5px;
+  font-size: 0.8rem;
+  flex-grow: 1;
+  flex-basis: 30%;
+  align-items: center;
+  justify-content: space-around ;
+}
+.addCategoriaCard:hover {
+cursor: pointer;
+    background-color: rgba(247, 247, 247, 0.164)
+
 }
 .menuheader {
   justify-content: space-between;

@@ -1,5 +1,8 @@
 <template>
   <div class="content">
+    <div  v-if="this.$store.state.msg" class="displayMsg">
+      <i class="fa-solid fa-circle-exclamation"></i> {{ this.$store.state.msg }}
+    </div>
     <Menu v-show="this.$store.state.isMenuOpen" />
     <div class="notesarea">
       <div class="notesareaheader flexcolumn">
@@ -7,7 +10,10 @@
           <h1>Anotações</h1>
           <div
             class="addNoteButton"
-            v-if="this.$store.state.isEditMode === null"
+            v-if="
+              this.$store.state.isEditMode === null &&
+              this.$store.state.notes.length !== 0
+            "
             @click="handleAdd()"
           >
             <i class="fa-solid fa-circle-plus"></i>
@@ -21,15 +27,23 @@
                 : "Todos"
             }}
           </h2>
-
           <button class="icon-button border" @click="deleteCategory()">
             <i class="fa-solid fa-trash-can"></i>
           </button>
         </span>
       </div>
-      <p v-if="this.$store.state.notes.length == 0">
-        Não há anotações nessa categoria!
+
+      <p v-if="this.$store.state.categories.length === 0">
+        Crie uma categoria para poder começar a anotar
       </p>
+      <div
+        v-else-if="this.$store.state.notes.length === 0"
+        class="flexcenter addNoteCard"
+        @click="handleAdd()"
+      >
+        <i class="fa-solid fa-plus mr-2"></i>
+        <p>Adicionar nota</p>
+      </div>
       <NoteCard
         v-for="note in this.$store.state.notes"
         :key="note.id"
@@ -52,6 +66,7 @@ import Menu from "../components/template/Menu.vue";
 import axios from "axios";
 import { baseApiUrl } from "@/global";
 
+
 export default {
   name: "content",
   components: {
@@ -59,14 +74,12 @@ export default {
     Menu,
     EditMenu,
   },
-  data() {
-    return {};
-  },
+
   methods: {
     getCategories() {
       const url = `${baseApiUrl}/categories`;
-
-      axios.get(url).then((res) => {
+      const userId = this.$store.state.user.id;
+      axios.get(url, { params: { userId } }).then((res) => {
         this.$store.state.categories = res.data;
         this.$store.commit("loadNotes");
       });
@@ -88,8 +101,9 @@ export default {
           this.$store.commit("toUploadMenu");
           this.$store.commit("setCategory", null);
           this.getCategories();
+          this.$store.commit("setMsg", null);
         })
-        .catch((e) => console.log(e));
+        .catch((e) => this.$store.commit("setMsg", e.response.data))
     },
   },
 
@@ -118,6 +132,21 @@ export default {
   position: fixed;
   top: 100px;
   right: 50px;
+}
+.addNoteCard {
+  min-width: 100px;
+  border-radius: 5px;
+  margin: 5px;
+  box-shadow: rgba(0, 0, 0, 0.192);
+  padding: 12px;
+  font-size: 1rem;
+  flex-grow: 1;
+  flex-basis: 30%;
+  border: 1px dashed var(--color-border-grey);
+}
+.addNoteCard:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.247);
 }
 .notesarea {
   border-right: 1px solid var(--color-border-grey);

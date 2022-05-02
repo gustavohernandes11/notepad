@@ -2,7 +2,7 @@
   <div class="app">
     <Header />
     <router-view v-if="!validatingToken" />
-    <div v-else class="loading">Validando</div>
+    <div v-else class="loading"><img src="./assets/Spin-1.1s-200px.gif" alt="loading gif"></div>
   </div>
 </template>
 <script>
@@ -43,6 +43,7 @@ export default {
       }
 
       this.validatingToken = false;
+
     },
   },
   created() {
@@ -104,6 +105,15 @@ h1 {
 }
 .loading {
   grid-area: content;
+  display: flex;
+  flex-direction: center;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--main-bg-color);
+}
+.loading img {
+  width: 50px;
+  height: 50px;
 }
 path {
   font-size: 50px;
@@ -169,5 +179,12 @@ router-link {
 *::-webkit-scrollbar-thumb {
   background-color: rgb(100, 100, 100); /* color of the scroll thumb */
   border-radius: 20px; /* roundness of the scroll thumb */
+}
+.displayMsg {
+  background-clip: rgb(175, 57, 57);
+  position: fixed;
+  top: 100px;
+  right: 250px;
+  max-width: 500px;
 }
 </style>

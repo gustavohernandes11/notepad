@@ -1,5 +1,8 @@
 <template>
   <div class="authview flexcenter">
+    <div  v-if="this.$store.state.msg" class="displayMsg">
+      <i class="fa-solid fa-circle-exclamation"></i> {{ this.$store.state.msg }}
+    </div>
     <div class="authbox">
       <h1 v-if="this.showSignup" class="mb-2">Login</h1>
       <h1 v-else class="mb-2">Cadastro</h1>
@@ -37,25 +40,22 @@
           id="inputconfirmpassword"
         />
       </div>
- 
+
       <div class="actions">
         <CommonButton
           v-if="showSignup"
           class="mb-2 mt-2"
           value="Enviar"
-          @click="signin(); showconsole();"
+          @click="
+            signin();
+            showconsole();
+          "
         />
-        <CommonButton
-          v-else
-          value="Registrar"
-          @click="signup()"
-        />
-        <a  v-if="this.showSignup" @click="toggleshowSignup()"
+        <CommonButton v-else value="Registrar" @click="signup()" />
+        <a v-if="this.showSignup" @click="toggleshowSignup()"
           >Não tem cadastro? Crie sua conta!</a
         >
-        <a v-else @click="toggleshowSignup"
-          >Ja possui uma conta: faça login!</a
-        >
+        <a v-else @click="toggleshowSignup">Ja possui uma conta: faça login!</a>
       </div>
     </div>
   </div>
@@ -75,10 +75,10 @@ export default {
     return {
       showSignup: true,
       user: {
-        name: '', 
-        email: '', 
-        password: '', 
-        confirmPassword: ''
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
       },
     };
   },
@@ -92,7 +92,7 @@ export default {
       this.user.confirmPassword = "";
     },
     signin() {
-      console.log('signin' + this.user);
+      console.log("signin" + this.user);
 
       const url = `${baseApiUrl}/signin`;
       axios
@@ -102,11 +102,12 @@ export default {
           this.$store.commit("setUser", res.data);
           localStorage.setItem(userKey, JSON.stringify(res.data));
           this.$router.push({ path: "/" });
+          this.$store.commit("setMsg", null)
         })
-        .catch((e) => console.log(e));
+        .catch((e) => this.$store.commit("setMsg", e.response.data));
     },
     signup() {
-      console.log('signup' + this.user);
+      console.log("signup" + this.user);
 
       const url = `${baseApiUrl}/signup`;
       axios
@@ -115,10 +116,9 @@ export default {
           console.log("Registrado", res.data);
           this.user = {};
           this.showSignup = true;
+          this.$store.commit("setMsg", null)
         })
-        .catch((e) => {
-          console.log(e);
-        });
+        .catch((e) => this.$store.commit("setMsg", e.response.data));
     },
   },
 };
@@ -138,7 +138,6 @@ export default {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-
 }
 .authbox button {
   width: 30px;

@@ -68,7 +68,8 @@ export default {
             this.$store.commit("resetNote", null);
             this.$store.commit("loadNotes");
           })
-          .catch((e) => alert(e));
+        .catch((e) => this.$store.commit("setMsg", e.response.data));
+         
       } else {
         const url = `${baseApiUrl}/notes`;
 
@@ -78,7 +79,8 @@ export default {
         axios.post(url, this.$store.state.note).then(() => {
           this.$store.commit("resetNote");
           this.$store.commit("loadNotes");
-        });
+        })
+        .catch((e) => this.$store.commit("setMsg", e.response.data));
       }
     },
     reset() {

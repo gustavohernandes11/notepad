@@ -37,6 +37,7 @@
       </span>
       <div class="flexrow">
         <div v-if="favorite" class="icon">★</div>
+        <div v-else class="icon">☆</div>
       </div>
       
     </div>
@@ -58,10 +59,13 @@ export default {
     };
   },
   methods: {
+    timerConfirm(){
+        setTimeout(() => { this.showConfirmButton = false }, 1000)
+    },
     toggleConfirm() {
       this.showConfirmButton
         ? (this.showConfirmButton = false)
-        : (this.showConfirmButton = true);
+        : (this.showConfirmButton = true, this.timerConfirm());
       console.log(this.showConfirmButton);
       this.$store.commit("loadNotes");
     },
@@ -74,7 +78,6 @@ export default {
   min-width: 200px;
   border-radius: 5px;
   margin: 5px;
-  /* border: 1px solid var(--color-border-grey); */
   box-shadow: rgba(0, 0, 0, 0.192);
   background-color: var(--main-bg-color);
   padding: 12px;

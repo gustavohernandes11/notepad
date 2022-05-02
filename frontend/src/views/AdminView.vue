@@ -1,5 +1,6 @@
 <template>
   <div class="adminbox flexrow">
+    
     <div v-if="isAdminEditMode" class="editbox flexcolumn">
       <b class="mt-2 mb-2">Modo de Edição</b>
 
@@ -33,12 +34,7 @@
           type="password"
         />
         <span v-if="isAdminEditMode == 'edit'" class="checkbox">
-          <input
-            type="checkbox"
-            v-model="user.admin"
-            value="true"
-            id="admin"
-          />
+          <input type="checkbox" v-model="user.admin" value="true" id="admin" />
           <label for="checkbox">Admin</label>
         </span>
       </div>
@@ -51,11 +47,9 @@
         />
         <CommonButton v-else value="Deletar" @click="deleteCurrentUser()" />
       </div>
-      <div v-if="this.user.id" class="userinfo mt-2">
-        <b>ID: {{ this.user.id }}</b>
-        <p>Qt. categorias:</p>
-        <p>Qt. notas:</p>
-      </div>
+      <div  v-if="this.$store.state.msg" class="mt-2">
+      <i class="fa-solid fa-circle-exclamation"></i> {{ this.$store.state.msg }}
+    </div>
     </div>
     <div class="tablebox">
       <div class="tableboxheader flexrow mt-2">
@@ -127,7 +121,10 @@ export default {
     },
     loadUsers() {
       const url = `${baseApiUrl}/users`;
-      axios.get(url).then((res) => (this.users = res.data));
+      axios
+        .get(url)
+        .then((res) => (this.users = res.data))
+        .catch((e) => this.$store.commit("setMsg", e.response));
     },
     getUser(id, mode = null) {
       if (mode) {
@@ -136,33 +133,46 @@ export default {
       const url = `${baseApiUrl}/users/${id}`;
       axios
         .get(url)
-        .then((res) => ((this.user = res.data), (this.user.password = "")));
+        .then((res) => ((this.user = res.data), (this.user.password = "")))
+        .catch((e) => this.$store.commit("setMsg", e));
     },
     sendCurrentUser() {
-      console.log(this.user)
+      console.log(this.user);
       if (this.user.id) {
         const url = `${baseApiUrl}/users/${this.user.id}`;
-        axios.put(url, this.user).then(() => console.log("put"));
-        this.reset();
+        axios
+          .put(url, this.user)
+          .then(() => {
+            console.log("put");
+            this.reset();
+            this.$store.commit("setMsg", null)
+          })
+          .catch((e) => this.$store.commit("setMsg", e.response.data));
       } else {
         const url = `${baseApiUrl}/users`;
-        axios.post(url, this.user).then(() => console.log("post"));
-        this.reset();
+        axios
+          .post(url, this.user)
+          .then(() => {
+            console.log("post");
+            this.reset();
+            this.$store.commit("setMsg", null)
+          })
+          .catch((e) => this.$store.commit("setMsg", e.response.data));
       }
     },
     reset() {
       this.user = {};
       this.loadUsers();
       this.isAdminEditMode = null;
+      this.$store.commit("setMsg", null)
     },
     async deleteCurrentUser() {
       console.log(this.user, this.isAdminEditMode);
-      
-        const url = `${baseApiUrl}/users/${this.user.id}`;
-        axios.delete(url).then(() => console.log("deleted"));
 
-        this.reset();
-      
+      const url = `${baseApiUrl}/users/${this.user.id}`;
+      axios.delete(url).then(() => console.log("deleted"));
+
+      this.reset();
     },
     computed: {
       isReadOnly() {

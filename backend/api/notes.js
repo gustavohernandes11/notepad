@@ -54,10 +54,9 @@ module.exports = app => {
     }
 
     const remove = (req, res) => {
-        let param = req.query.userId
 
         app.db('notes')
-            .where({ id: req.params.id, user_id: param })
+            .where({ id: req.params.id })
             .del()
             .then(_ => res.status(204).send())
             .catch(e => res.status(400).send(e))

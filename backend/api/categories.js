@@ -63,11 +63,11 @@ module.exports = app => {
 
 
     const remove = async (req, res) => {
-        let param = req.query.userId
+
 
         try {
             const relatedNotes = await app.db('notes')
-            .where({ category_id: req.params.id, user_id: param })
+            .where({ category_id: req.params.id })
             notExistsOrError(relatedNotes, 'Categoria possui notas relacionadas')
 
             await app.db('categories')
