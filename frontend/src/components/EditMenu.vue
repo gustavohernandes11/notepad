@@ -13,7 +13,6 @@
         v-for="category in this.$store.state.categories"
         :key="category.id"
         :value="category.id"
-        :selected="this.$store.state.category.id === category.id"
       >
         {{ category.name }}
       </option>
@@ -28,16 +27,38 @@
     />
     <textarea
       name="content"
-      maxlength="999"
+      maxlength="255"
       id="content"
       cols="30"
       rows="10"
       placeholder="Conteúdo"
       v-model="this.$store.state.note.content"
     />
-    <!-- <input type="hidden" name="user_id" :value="this.$store.state.user.id" v-model="this.$store.state.note.user_id"> -->
+    <span class="flexrow">
+      <span class="checkbox">
+        <input
+          type="checkbox"
+          v-model="this.$store.state.note.favorite"
+          :value="true"
+          id="favorite"
+        />
+        <label for="favorite">Favorito</label>
+      </span>
+      <span class="checkbox ml-2">
+        <input
+          type="checkbox"
+          v-model="this.$store.state.note.important"
+          id="important"
+        />
+        <label for="important">Fixar</label>
+      </span>
+    </span>
+
     <CommonButton value="Cancelar" @click="reset()" />
     <CommonButton value="Enviar" @click="sendCurrentNote()" />
+    <p v-if="this.$store.state.note.id">
+      <small>Data de criação: {{ this.$store.state.note.createdAt }}</small>
+    </p>
   </div>
 </template>
 
@@ -45,6 +66,8 @@
 import CommonButton from "./CommonButton.vue";
 import axios from "axios";
 import { baseApiUrl } from "../global";
+/* eslint-disable no-unreachable */
+
 export default {
   name: "MenuEdit",
   components: {
@@ -56,11 +79,11 @@ export default {
     };
   },
   methods: {
-    sendCurrentNote() {
+     sendCurrentNote() {
+      console.log(this.$store.state.note);
       if (this.$store.state.note.id) {
-        const url = `${baseApiUrl}/notes/${this.$store.state.note.id}`;
 
-        this.$store.state.note.category_id = this.selectedCategoryId;
+        const url = `${baseApiUrl}/notes/${this.$store.state.note.id}`;
         this.$store.state.user.id = this.$store.state.note.user_id;
 
         console.log(this.$store.state.note);
@@ -69,19 +92,22 @@ export default {
           .put(url, this.$store.state.note)
           .then(() => {
             this.$store.commit("resetNote", null);
+            this.$store.commit("setEditMode", null);
+          })
+          .then(() => {
+            this.$store.state.notes = [];
             this.$store.commit("loadNotes");
           })
           .catch((e) => this.$store.commit("setMsg", e.response.data));
       } else {
         const url = `${baseApiUrl}/notes`;
-
         this.$store.state.note.category_id = this.selectedCategoryId;
         this.$store.state.note.user_id = this.$store.state.user.id;
 
         axios
           .post(url, this.$store.state.note)
           .then(() => {
-            this.$store.commit("resetNote");
+            this.$store.commit("resetNote", null);
             this.$store.commit("loadNotes");
           })
           .catch((e) => this.$store.commit("setMsg", e.response.data));
@@ -112,7 +138,7 @@ export default {
   font-size: 0.8rem;
 }
 .editorarea textarea {
-  height: 140px;
+  resize: none;
   flex-grow: 1;
 }
 

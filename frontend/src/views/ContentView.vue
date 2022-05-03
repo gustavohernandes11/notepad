@@ -1,13 +1,16 @@
 <template>
   <div @click="this.$store.commit('setMsg', null)" class="content">
-    <div  v-if="this.$store.state.msg" class="displayMsg">
-      <i class="fa-solid fa-circle-exclamation"></i> {{ this.$store.state.msg }}
-    </div>
     <Menu v-show="this.$store.state.isMenuOpen" />
     <div class="notesarea">
       <div class="notesareaheader flexcolumn">
         <span class="flexrow">
-          <h1>Anotações</h1>
+          <span class="flexrow">
+            <h1>Anotações</h1>
+            <div v-if="this.$store.state.msg" >
+              <i class="fa-solid fa-circle-exclamation"></i>
+              {{ this.$store.state.msg }}
+            </div>
+          </span>
           <div
             class="addNoteButton"
             v-if="
@@ -15,6 +18,7 @@
               this.$store.state.notes.length !== 0
             "
             @click="handleAdd()"
+            
           >
             <i class="fa-solid fa-circle-plus"></i>
           </div>
@@ -27,14 +31,14 @@
                 : "Todos"
             }}
           </h2>
-          <button class="icon-button border" @click="deleteCategory()">
+          <button v-if="!!this.$store.state.category.name" class="icon-button border" @click="deleteCategory()">
             <i class="fa-solid fa-trash-can"></i>
           </button>
         </span>
       </div>
 
       <p v-if="this.$store.state.categories.length === 0">
-        Crie uma categoria para poder começar a anotar
+        Crie uma categoria para poder anotar!
       </p>
       <div
         v-else-if="this.$store.state.notes.length === 0"
@@ -48,13 +52,14 @@
         v-for="note in this.$store.state.notes"
         :key="note.id"
         :favorite="note.favorite"
-        :noteTitle="note.title"
+        :title="note.title"
         :category="note.category_id"
         :content="note.content"
+        :important="note.important"
         @click="this.$store.commit('getNote', note)"
       />
     </div>
-    <EditMenu v-if="this.$store.state.isEditMode" />
+    <EditMenu v-show="this.$store.state.isEditMode !== null" />
   </div>
 </template>
 
@@ -65,7 +70,6 @@ import NoteCard from "../components/NoteCard.vue";
 import Menu from "../components/template/Menu.vue";
 import axios from "axios";
 import { baseApiUrl } from "@/global";
-
 
 export default {
   name: "content",
@@ -103,7 +107,7 @@ export default {
           this.getCategories();
           this.$store.commit("setMsg", null);
         })
-        .catch((e) => this.$store.commit("setMsg", e.response.data))
+        .catch((e) => this.$store.commit("setMsg", e.response.data));
     },
   },
 
@@ -156,6 +160,7 @@ export default {
   flex-wrap: wrap;
   padding: 40px 15px;
   overflow-y: auto;
+  align-content: baseline;
 }
 .notesareaheader {
   width: 100%;

@@ -8,8 +8,8 @@ module.exports = app => {
 
 
         try {
-            existsOrError(category.name, 'Nome não informado!')
-            existsOrError(category.user_id, 'Categoria não vinculada com usuário!')
+            existsOrError(category.name, 'Categoria não informada!')
+            existsOrError(category.user_id, 'Categoria não vinculada com usuário! Reinicie a página.')
 
 
             const categoryFromDB = await app.db('categories')

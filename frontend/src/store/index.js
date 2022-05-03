@@ -102,14 +102,7 @@ export default createStore({
 
 
   },
-  actions: {
-    handleFavorite(context) {
-      context.commit('toggleFavorite');
-      context.commit('loadNotes');
 
-
-    }
-  },
   modules: {
   }
 })

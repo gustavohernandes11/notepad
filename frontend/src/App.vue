@@ -134,6 +134,9 @@ path:hover {
 .mr-2 {
   margin-right: 20px;
 }
+.mr-1 {
+  margin-right: 10px;
+}
 .ml-2 {
   margin-left: 20px;
 }
@@ -187,4 +190,12 @@ router-link {
   right: 50%;
   max-width: 500px;
 }
+.checkbox {
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+}
+
 </style>

@@ -75,7 +75,7 @@ export default {
           this.getCategories();
           this.setAddMode(null);
         })
-        .catch((e) => console.log(e));
+        .catch((e) => this.$store.commit("setMsg", e.response.data));
     },
 
     setAddMode(mode) {

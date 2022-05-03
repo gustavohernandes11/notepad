@@ -1,7 +1,7 @@
 <template>
   <div class="notecard flexcolumn">
     <div class="noteheader flexrow">
-      <b>{{ noteTitle }}</b>
+      <b>{{ title }}</b>
     </div>
     <div class="notebody">
       <p>{{ content }}</p>
@@ -11,7 +11,7 @@
         <button
           class="icon-button border"
           value="Edit"
-          @click="this.$store.commit('setEditMode', 'edit')"
+          @click="this.$store.commit('setEditMode', 'edit'); this.$store.commit('setCategory', null)"
         >
           <i class="fa-solid fa-marker"></i>
         </button>
@@ -35,23 +35,25 @@
           <i class="fa-solid fa-trash-can"></i> 
         </button>
       </span>
-      <div class="flexrow">
-        <div v-if="favorite" class="icon" >★</div>
-        <div v-else class="icon">☆</div>
+      <div class="flexrow flexcenter">
+      <i v-if="important" class="mr-1 fa-solid fa-triangle-exclamation"></i>
+       <i v-if="favorite" class="fa-solid fa-star"></i>
+
       </div>
+
       
     </div>
   </div>
 </template>
 
 <script>
-// "☆★"
 export default {
   props: {
-    noteTitle: String,
+    title: String,
     content: String,
     category: String,
     favorite: Boolean,
+    important: Boolean
   },
   date() {
     return {
@@ -84,7 +86,7 @@ export default {
   padding: 12px;
   font-size: 0.8rem;
   flex-grow: 1;
-  flex-basis: 30%;
+  flex-basis: 45%;
 }
 .icon {
   font-size: 20px;
