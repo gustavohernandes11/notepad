@@ -1,9 +1,10 @@
 <template>
   <header class="header">
     <strong>!notePad</strong>
-    <nav class="flexrow">
+    <span>
+    <p v-if="this.$store.state.user" class="username mr-2">{{ this.$store.state.user.email}}</p>
+    <nav>
       <span
-        class="flexrow"
          v-if="this.$store.state.user !== null && this.$store.state.user.admin" 
       >
         <router-link v-if="this.$store.state.user" to="/">
@@ -24,6 +25,7 @@
         </router-link>
       </span>
     </nav>
+    </span>
   </header>
 </template>
 
@@ -62,5 +64,15 @@ export default {
   align-items: center;
   justify-content: space-between;
   background-color: var(--main-bg-color);
+}
+span, nav {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+.username {
+  padding: 0px 15px;
+  border-right: 1px solid var(--color-border-grey);
+
 }
 </style>

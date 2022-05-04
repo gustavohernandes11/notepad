@@ -80,7 +80,6 @@ export default {
   },
   methods: {
      sendCurrentNote() {
-      console.log(this.$store.state.note);
       if (this.$store.state.note.id) {
 
         const url = `${baseApiUrl}/notes/${this.$store.state.note.id}`;
@@ -95,7 +94,7 @@ export default {
             this.$store.commit("setEditMode", null);
           })
           .then(() => {
-            this.$store.state.notes = [];
+            // this.$store.state.notes = [];
             this.$store.commit("loadNotes");
           })
           .catch((e) => this.$store.commit("setMsg", e.response.data));
