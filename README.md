@@ -50,13 +50,9 @@ No banco de dados as senhas são corretamente criptografadas:
 - express
 - jwt-simple
 - knex
-- moment
 - node
-- passport
 - passport-jwt
 - postgresql
-- pm2
-- sqlite3
 
 
 
